@@ -14,7 +14,7 @@ class TodoResourceTest {
           .when().get("/todos")
           .then()
              .statusCode(200)
-             .body(is("Hello from Quarkus REST"));
+             .body(is("Todo API is alive"));
     }
 
 }
