@@ -1,7 +1,10 @@
 package com.example.todo;
 
-public class Todo {
-    public Long id;
+import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Entity;
+
+@Entity
+public class Todo extends PanacheEntity{
     public String title;
     public boolean done;
 }

@@ -1,38 +1,33 @@
 package com.example.todo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class TodoService {
 
-private final List<Todo> todos= new ArrayList<>();
-private Long counter = 1L;
 
 public List<Todo> getAll(){
-    return todos;
+    return Todo.listAll();
 }
 
+@Transactional
 public Todo createTodo(Todo todo){
-    todo.id = counter++;
-    todos.add(todo);
+    todo.id = null;
+    todo.persist();
     return todo;
 }
 
 public Todo findById(Long id){
-    for(Todo t: todos){
-        if(t.id.equals(id)){
-            return t;
-        }
-    }
-        return null;
-
+   return Todo.findById(id);
 }
 
+
+@Transactional
 public Todo updateById(Long id,Todo updated){
-    Todo existing = findById(id);
+    Todo existing = Todo.findById(id);
 
     if(existing==null){
         return null;
@@ -49,12 +44,12 @@ public Todo updateById(Long id,Todo updated){
 
 
 }
-
+@Transactional
 public boolean delete(Long id){
-    Todo existing = findById(id);
+    Todo existing = Todo.findById(id);
 
     if(existing!=null){
-        todos.remove(existing);
+        existing.delete();
         return true;
     }
 
