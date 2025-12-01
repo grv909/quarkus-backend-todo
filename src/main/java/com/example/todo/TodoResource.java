@@ -3,6 +3,8 @@ package com.example.todo;
 import java.util.List;
 
 import jakarta.inject.Inject;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -19,6 +21,18 @@ public class TodoResource {
     
     @Inject 
     TodoService service;
+
+    @Inject
+    @ConfigProperty(name = "todoapp.greeting", defaultValue = "Hello from default config")
+    String greetingMessage;
+
+
+    @GET
+    @Path("/greeting")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String greetings(){
+        return greetingMessage;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
