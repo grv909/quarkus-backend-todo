@@ -2,31 +2,44 @@ package com.example.todo;
 
 import java.util.List;
 
+import com.example.todo.dto.TodoCreateRequest;
+import com.example.todo.dto.TodoResponse;
+import com.example.todo.dto.TodoUpdateRequest;
+import com.example.todo.mapper.TodoMapper;
+
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class TodoService {
 
+    @Inject
+    TodoMapper mapper;
 
-public List<Todo> getAll(){
-    return Todo.listAll();
+
+public List<TodoResponse> getAll(){
+    List<Todo> todos= Todo.listAll();
+    return mapper.toResponseList(todos);
 }
 
 @Transactional
-public Todo createTodo(Todo todo){
+public TodoResponse createTodo(TodoCreateRequest request){
+    Todo todo = mapper.toEntity(request);
     todo.id = null;
     todo.persist();
-    return todo;
+    return mapper.toResponse(todo);
 }
 
-public Todo findById(Long id){
-   return Todo.findById(id);
+public TodoResponse findOne(Long id){
+   Todo todo = Todo.findById(id);
+
+   return (todo==null)?null:mapper.toResponse(todo);
 }
 
 
 @Transactional
-public Todo updateById(Long id,Todo updated){
+public TodoResponse updateById(Long id,TodoUpdateRequest updated){
     Todo existing = Todo.findById(id);
 
     if(existing==null){
@@ -37,10 +50,9 @@ public Todo updateById(Long id,Todo updated){
         return null; // Handle the error in resource
     }
 
-    existing.title = updated.title;
-    existing.done = updated.done;
+    mapper.updateEntityFromDto(updated, existing);
 
-    return existing;
+    return mapper.toResponse(existing);
 
 
 }
