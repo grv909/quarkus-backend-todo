@@ -14,7 +14,7 @@ class TodoResourceTest {
           .when().get("/todos")
           .then()
              .statusCode(200)
-             .body(is("Todo API is alive"));
+             .body(is("[]"));
     }
 
 }
