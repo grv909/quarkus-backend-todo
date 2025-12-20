@@ -11,10 +11,10 @@ class TodoResourceTest {
     @Test
     void testHelloEndpoint() {
         given()
-          .when().get("/todos")
-          .then()
-             .statusCode(200)
-             .body(is("[]"));
+                .when().get("/todos/greeting")
+                .then()
+                .statusCode(200)
+                .body(is("Welcome to the Quarkus Todo API (dev)"));
     }
 
 }
