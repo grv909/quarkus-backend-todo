@@ -35,6 +35,15 @@ public class TodoResource {
     @ConfigProperty(name = "todoapp.greeting", defaultValue = "Hello from default config")
     String greetingMessage;
 
+    @ConfigProperty(name = "quarkus.profile")
+    String profile;
+
+    @GET
+    @Path("/profile")
+    public String profile() {
+        return profile;
+    }
+
     @GET
     @Path("/greeting")
     @Produces(MediaType.TEXT_PLAIN)
